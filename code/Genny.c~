@@ -1,0 +1,23 @@
+#include <avr/io.h>
+#include <stdint.h>
+
+uint8_t sineData[256] __attribute__((section("mysine")));
+
+
+void generate(void) __attribute__((section(".mycode")));
+
+int main(int argc, char** argv)
+{
+  generate();
+}
+
+uint8_t step = 0;
+
+void generate(void)
+{
+  while(1)
+  {
+    PORTB = sineData[step];
+    step++;
+  }
+}

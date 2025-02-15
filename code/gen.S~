@@ -1,0 +1,33 @@
+#include "avr/io.h"
+
+
+.global fn2
+.global generate
+generate:
+        
+fn2:
+        sts temp1, r0
+        sts temp2, r1
+        //pop r0              ;  high byte on top
+        //pop r1              ;  low byte next
+        //sts addr2, r1       ; low byte of pc
+        //sts addr2+1, r0     ; high byte of pc
+        
+        in r0, _SFR_IO_ADDR(SPL)  ; see how sp corresponds to value pushed
+        sts savedSP,r0
+        in r0, _SFR_IO_ADDR(SPH)
+        sts savedSP+1, r0
+        lds r0, con
+        push r0
+        lds r0, con+1
+        push r0
+        pop r0
+        pop r0
+        lds r0, addr2+1
+        
+        //push r1
+        //push r0
+        lds r0, temp1
+        lds r1, temp2
+        ret
+        
